@@ -3,7 +3,7 @@
         <div class="grid grid-cols-3">
 
             <div>
-                <p class="text-center"><a href="#" class="text-lg hover:underline">夜食レシピを投稿</a></p>
+                <p class="text-center"><a href="{{ route('recipe.create') }}" class="text-lg hover:underline">夜食レシピを投稿</a></p>
             </div>
 
             <div>

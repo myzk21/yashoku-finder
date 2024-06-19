@@ -16,12 +16,18 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <link rel="stylesheet" href="css/color.css">
+        @if (isset($script))
+            {{ $script }}{{--各ファイルで必要なJSを読み込む--}}
+        @endif
+
+
+        <link rel="stylesheet" href="/css/color.css">
     </head>
     <body class="font-sans antialiased background-color">
         <div class="min-h-screen">
             {{-- 共通ヘッダーの読み込み --}}
             @include('layouts.global-header')
+            @include('flash::message')
 
             <!-- Page Heading -->
             @if (isset($header))
@@ -33,7 +39,7 @@
             @endif
 
             <!-- Page Content -->
-            <main class="mt-16"><!--固定したヘッダの下に要素が配置されないようにする-->
+            <main class="my-24"><!--固定したヘッダ、フッターの下に要素が配置されないようにする-->
                 {{ $slot }}
             </main>
         </div>
