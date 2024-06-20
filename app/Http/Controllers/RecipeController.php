@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\RecipeCreateRequest;
 use App\Models\Category;
 use App\Models\Recipe;
 use App\Models\Step;
@@ -33,7 +34,7 @@ class RecipeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RecipeCreateRequest $request)
     {
         $posts = $request->all();
         dd($posts);

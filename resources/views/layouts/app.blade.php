@@ -27,7 +27,9 @@
         <div class="min-h-screen">
             {{-- 共通ヘッダーの読み込み --}}
             @include('layouts.global-header')
-            @include('flash::message')
+            <div class="mt-16">
+                @include('flash::message')
+            </div>
 
             <!-- Page Heading -->
             @if (isset($header))
