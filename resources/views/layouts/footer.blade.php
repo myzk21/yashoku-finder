@@ -7,7 +7,7 @@
             </div>
 
             <div>
-                <p class="text-center"><a href="#" class="text-lg hover:underline">レシピ一覧</a></p>
+                <p class="text-center"><a href="{{ route('recipe.index') }}" class="text-lg hover:underline">レシピ一覧</a></p>
             </div>
 
             <div>

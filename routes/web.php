@@ -19,6 +19,10 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+//レシピ一覧画面
+Route::get('/recipes/index', [RecipeController::class, 'index'])->name('recipe.index');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

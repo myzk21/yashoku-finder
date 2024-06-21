@@ -19,7 +19,9 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        //
+        $recipes = Recipe::paginate(5);
+        // dd($recipes);
+        return view('recipes.index', compact('recipes'));
     }
 
     /**
