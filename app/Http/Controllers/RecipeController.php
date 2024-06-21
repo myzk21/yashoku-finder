@@ -37,12 +37,11 @@ class RecipeController extends Controller
     public function store(RecipeCreateRequest $request)
     {
         $posts = $request->all();
-        dd($posts);
 
         //画像ファイルの保存
-        //$image = $request->file('image');
-        //$path = Storage::disk('s3')->putFile('recipe', $image, 'public');//s3のURLを取得、awsに保存
-        //$url = Storage::disk('s3')->url($path);//$pathはrecipe/以下のディレクトリパスだからurlに変換
+        $image = $request->file('image');
+        $path = Storage::disk('s3')->putFile('recipe', $image, 'public');//s3のURLを取得、awsに保存
+        $url = Storage::disk('s3')->url($path);//$pathはrecipe/以下のディレクトリパスだからurlに変換
 
         try{
             DB::beginTransaction();
@@ -76,6 +75,9 @@ class RecipeController extends Controller
                 ];
             }
             Step::insert($steps);
+
+            //カテゴリーの保存
+            $recipe->categories()->sync($posts['categories']);
 
             DB::commit();
         } catch (\Throwable $th) {

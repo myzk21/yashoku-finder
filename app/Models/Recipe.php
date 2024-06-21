@@ -17,6 +17,10 @@ class Recipe extends Model
         'title',
         'description',
         'image',
-        'views',
+        // 'views',
     ];
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_recipes', 'recipe_id', 'category_id');
+    }
 }

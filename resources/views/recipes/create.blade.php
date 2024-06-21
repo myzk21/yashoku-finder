@@ -89,12 +89,6 @@
 
         <hr class="my-6">{{--横線--}}
 
-        {{-- <select name="categories[]" class="border border-gray-300 p-2 mb-4 w-full rounded" multiple>
-            <option value="">カテゴリー</option>
-        @foreach($categories as $c)
-            <option value="{{ $c->id }}" {{ (old('category') ?? null) == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
-        @endforeach
-          </select> --}}
           <h4 class="text-xl mb-4">カテゴリー</h4>
           <div class="text-center">
                 @foreach($categories as $c)

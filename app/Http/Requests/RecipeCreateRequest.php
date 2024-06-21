@@ -24,11 +24,11 @@ class RecipeCreateRequest extends FormRequest
         return [
             'title' => 'required|string|max:50',
             'description' => 'required|string|max:500',
-            'category' => 'required',
             'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048',
             'ingredients.*.name' => 'required|string|max:50',
             'ingredients.*.quantity' => 'required|string|max:50',
-            'steps.*' => 'required|string|max:50'
+            'steps.*' => 'required|string|max:50',
+            'categories' => 'required',
         ];
     }
     public function messages()
@@ -36,11 +36,11 @@ class RecipeCreateRequest extends FormRequest
         return [
             'title' => 'レシピ名は必須です',
             'description' => 'レシピの説明は必須です',
-            'category' => 'カテゴリーは必須です',
             'image' => 'レシピの画像は必須です',
             'ingredients.*.name' => '材料名は必須です',
             'ingredients.*.quantity' => '分量は必須です',
-            'steps.*' => '手順は必須です'
+            'steps.*' => '手順は必須です',
+            'categories' => 'カテゴリーは必須です',
         ];
     }
 }

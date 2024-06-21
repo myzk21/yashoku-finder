@@ -12,4 +12,9 @@ class Category extends Model
     protected $fillable = [
         'name',
     ];
+
+    public function recipes()
+    {
+        return $this->belongsToMany(Recipe::class, 'category_recipes', 'recipe_id', 'category_id');
+    }
 }
