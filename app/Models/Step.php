@@ -14,4 +14,7 @@ class Step extends Model
         'step_number',
         'description',
     ];
+    public function recipe() {
+        return $this->belongsTo(Recipe::class);
+    }
 }

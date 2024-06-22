@@ -11,6 +11,9 @@ use App\Models\Category;
 use App\Models\Recipe;
 use App\Models\Step;
 use App\Models\Ingredient;
+use Diglactic\Breadcrumbs\Breadcrumbs;
+use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
+
 
 class RecipeController extends Controller
 {
@@ -53,7 +56,6 @@ class RecipeController extends Controller
             $recipe->title = $posts['title'];
             $recipe->description = $posts['description'];
             $recipe->image = $url;
-            // $recipe->views = $posts->views;
             $recipe->save();
 
             //材料の保存
@@ -88,15 +90,20 @@ class RecipeController extends Controller
             throw $th;
         }
         flash()->success('レシピを投稿しました');
-        // return redirect()->route('recipe.show', ['id' => $recipe->id]);
+        return redirect()->route('recipe.show', ['id' => $recipe->id]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request, string $id)
     {
-        //
+        $recipe = Recipe::with(['ingredients', 'steps', 'reviews.user', 'categories', 'user'])
+        ->where('recipes.id', $id)
+        ->first();
+        $recipe->increment('views');
+
+        return view('recipes.show', compact('recipe'));
     }
 
     /**

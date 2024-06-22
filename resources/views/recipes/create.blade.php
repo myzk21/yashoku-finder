@@ -54,7 +54,7 @@
         </div>
 
         <hr class="my-4">{{--横線--}}
-        <h4 class="text-xl mb-4">手順</h4>
+        <h4 class="text-xl mb-4">作り方</h4>
         <div id="steps">
       @php
         $old_steps = old('steps') ?? null;
