@@ -1,9 +1,16 @@
 <x-app-layout>
+    <x-slot name="script">
+        <script src="/js/recipe/destroy.js"></script>
+    </x-slot>
     <div class="w-10/12 p-6 mx-auto bg-white rounded mb-6">
         {{---レシピ詳細--}}
         <div class="grid grid-cols-2 rounded border border-gray-700 my-4">
             <div class="col-span-1">
-                <img class="object-cover w-full aspect-square"src="{{ $recipe->image }}" alt="{{ $recipe->title }}">
+                @if($recipe->image)
+                    <img class="object-cover w-full aspect-square"src="{{ $recipe->image }}" alt="{{ $recipe->title }}">
+                @else
+                    <img class="object-cover w-full aspect-square"src="/images/noImage.jpg" alt="{{ $recipe->title }}">
+                @endif
             </div>
             <div class="col-span-1 p-4">
                 <h4 class="text-2xl font-bold mb-2">レシピ名</h4>
@@ -34,7 +41,7 @@
         </div>
 
      {{--手順--}}
-        <div class="">
+        <div class="mb-4">
             <h4 class="text-2xl font-bold mb-6">作り方</h4>
             <div class="grid grid-cols-4 gap-4">
                 @foreach($recipe->steps as $s)
@@ -46,6 +53,16 @@
                     </div>
                 @endforeach
             </div>
+        </div>
+        <div class="flex justify-end">
+            @if(Auth::check() && (Auth::user()->id === $recipe->user_id))
+                <a href="{{ route('recipe.edit', ['id' => $recipe->id]) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 mr-4  rounded">編集</a>
+                <form action="{{ route('recipe.destroy', ['id' => $recipe->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button id="delete" type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">レシピを削除する</button>
+                </form>
+            @endif
         </div>
     </div>
 

@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\RecipeCreateRequest;
+use App\Http\Requests\RecipeRequest;
 use App\Models\Category;
 use App\Models\Recipe;
 use App\Models\Step;
@@ -39,14 +39,16 @@ class RecipeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RecipeCreateRequest $request)
+    public function store(RecipeRequest $request)
     {
         $posts = $request->all();
 
         //画像ファイルの保存
-        $image = $request->file('image');
-        $path = Storage::disk('s3')->putFile('recipe', $image, 'public');//s3のURLを取得、awsに保存
-        $url = Storage::disk('s3')->url($path);//$pathはrecipe/以下のディレクトリパスだからurlに変換
+        if( $request->hasFile('image') ) {
+            $image = $request->file('image');
+            $path = Storage::disk('s3')->putFile('recipe', $image, 'public');//s3のURLを取得、awsに保存
+            $url = Storage::disk('s3')->url($path);//$pathはrecipe/以下のディレクトリパスだからurlに変換
+        }
 
         try{
             DB::beginTransaction();
@@ -55,7 +57,9 @@ class RecipeController extends Controller
             $recipe->user_id = Auth::id();
             $recipe->title = $posts['title'];
             $recipe->description = $posts['description'];
-            $recipe->image = $url;
+            if (isset($url)) {
+                $recipe->image = $url;
+            }
             $recipe->save();
 
             //材料の保存
@@ -69,7 +73,7 @@ class RecipeController extends Controller
             }
             Ingredient::insert($ingredients);
 
-            //手順の保存(配列に入れて一括で保存)
+            //手順の保存
             $steps = [];
             foreach($posts['steps'] as $key => $step) {
                 $steps[$key] = [
@@ -111,15 +115,74 @@ class RecipeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $recipe = Recipe::with(['ingredients', 'steps', 'reviews.user', 'categories', 'user'])
+        ->where('recipes.id', $id)
+        ->first();
+        $categories = Category::all();
+
+        if( !Auth::check() || (Auth::id() !== $recipe->user_id) ) {
+            abort(403);
+        }
+        return view('recipes.edit', compact('recipe', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RecipeRequest $request, string $id)
     {
-        //
+        $posts = $request->all();
+        $update_array = [
+            'title' => $posts['title'],
+            'description' => $posts['description'],
+        ];
+        if( $request->hasFile('image') ) {
+            $image = $request->file('image');
+            $path = Storage::disk('s3')->putFile('recipe', $image, 'public');
+            $url = Storage::disk('s3')->url($path);//s3に画像保存ー＞url取得
+            $update_array['image'] = $url;//もし画像が更新されたら配列に追加
+        }
+        try{
+            DB::beginTransaction();
+
+            Recipe::where('id', $id)->update($update_array);
+
+            Ingredient::where('recipe_id', $id)->delete();//既存の材料、ステップの削除
+            Step::where('recipe_id', $id)->delete();
+
+            //材料の保存
+            $ingredients = [];
+            foreach($posts['ingredients'] as $key => $ingredient) {
+                $ingredients[$key] = [
+                    'recipe_id' => $id,
+                    'name' => $ingredient['name'],
+                    'quantity' => $ingredient['quantity'],
+                ];
+            }
+            Ingredient::insert($ingredients);
+
+            //手順の保存
+            $steps = [];
+            foreach($posts['steps'] as $key => $step) {
+                $steps[$key] = [
+                    'recipe_id' => $id,
+                    'step_number' => $key + 1,
+                    'description' => $step,
+                ];
+            }
+            Step::insert($steps);
+            //カテゴリー
+            $recipe = Recipe::find($id);
+            $recipe->categories()->sync($posts['categories']);
+
+            DB::commit();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            \Log::debug(print_r($th->getMessage(), true));
+            throw $th;
+        }
+        flash()->success('レシピを更新しました');
+        return redirect()->route('recipe.show', ['id' => $id]);
     }
 
     /**
@@ -127,6 +190,9 @@ class RecipeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Recipe::where('id', $id)->delete();
+
+        flash()->warning('レシピを削除しました');
+        return redirect()->route('home');
     }
 }

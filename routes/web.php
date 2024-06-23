@@ -36,6 +36,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipe.create');
     Route::post('/recipes', [RecipeController::class, 'store'])->name('recipe.store');
 
+    //レシピ編集
+    Route::get('/recipes/edit/{id}', [RecipeController::class, 'edit'])->name('recipe.edit');
+    Route::patch('/recipes/update/{id}', [RecipeController::class, 'update'])->name('recipe.update');
+
+    //レシピ削除
+    Route::delete('/recipes/destroy/{id}', [RecipeController::class, 'destroy'])->name('recipe.destroy');
+
     //プロフィール
 });
 //レシピ詳細

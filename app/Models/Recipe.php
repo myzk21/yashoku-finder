@@ -17,7 +17,6 @@ class Recipe extends Model
         'title',
         'description',
         'image',
-        // 'views',
     ];
     public function ingredients() {
         return $this->hasMany(Ingredient::class);
