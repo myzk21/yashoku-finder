@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\ReviewController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +44,10 @@ Route::middleware('auth')->group(function () {
 
     //レシピ削除
     Route::delete('/recipes/destroy/{id}', [RecipeController::class, 'destroy'])->name('recipe.destroy');
+
+    //レビュー
+    Route::post('/recipes/{id}/review', [ReviewController::class, 'store'])->name('review.store');
+
 
     //プロフィール
 });

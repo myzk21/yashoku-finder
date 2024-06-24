@@ -8,7 +8,7 @@
             @auth
                 <form action="{{route('logout')}}" method="POST">
                     @csrf
-                    <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 rounded text-sm px-5 py-2.5 ml-auto">ログアウト</button>
+                    <button type="submit" class="focus:outline-none text-white bg-gray-600 hover:bg-gray-800 rounded text-sm px-5 py-2.5 ml-auto">ログアウト</button>
                 </form>
             @endauth
             @guest
