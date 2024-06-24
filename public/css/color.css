@@ -4,3 +4,12 @@
 .recipe-background-color{
     background-color: #f8f5eb;
 }
+.home-background-color {
+    background-color: #1f2937;
+}
+.button-color {
+    background-color: #1f2937;
+}
+.button-color:hover {
+    opacity: .8;
+}

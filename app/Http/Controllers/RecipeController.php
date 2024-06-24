@@ -17,6 +17,11 @@ use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
 class RecipeController extends Controller
 {
+    public function home()
+    {
+        $categories = Category::all();
+        return view('home', compact('categories'));
+    }
     /**
      * Display a listing of the resource.
      */
@@ -117,6 +122,7 @@ class RecipeController extends Controller
         if( Auth::check() ) {
             $is_reviewed = $recipe->reviews->contains('user_id', Auth::id());
         }
+
 
         return view('recipes.show', compact('recipe', 'is_my_recipe', 'is_reviewed'));
     }

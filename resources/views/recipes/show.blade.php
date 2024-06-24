@@ -95,7 +95,7 @@
             @endif
         @endauth
         @foreach($recipe->reviews as $r)
-            <div class="recipe-background-color rounded mb-4">
+            <div class="recipe-background-color rounded mb-4 p-2">
                 <div class="flex mb-4">
                     @for($i = 0; $i < $r->rating; $i++) {{--星のアイコン--}}
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6 text-yellow-400">
@@ -104,7 +104,16 @@
                     @endfor
                     <p class="text-gray-800 font-bold ml-2">{{ $r->user->name }}</p>
                 </div>
-                <p>{{ $r->comment }}</p>
+                <form action="{{ route('review.destroy', ['id' => $r->id]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <div class="flex">
+                        <p>{{ $r->comment }}</p>
+                        @if(Auth::check() && $r->user_id === Auth::id()) {{-- ログインユーザーのレビューかどうかを判定 --}}
+                            <button type="submit" class="text-red-500 ml-auto mr-2">削除</button>
+                        @endif
+                    </div>
+                </form>
             </div>
         @endforeach
         @if($recipe->reviews->isEmpty())

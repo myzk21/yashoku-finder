@@ -17,9 +17,7 @@ use App\Http\Controllers\ReviewController;
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [RecipeController::class, 'home'])->name('home');
 
 //レシピ一覧画面
 Route::get('/recipes/index', [RecipeController::class, 'index'])->name('recipe.index');
@@ -48,6 +46,8 @@ Route::middleware('auth')->group(function () {
     //レビュー
     Route::post('/recipes/{id}/review', [ReviewController::class, 'store'])->name('review.store');
 
+    //レビュー削除
+    Route::delete('/recipes/review/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
 
     //プロフィール
 });

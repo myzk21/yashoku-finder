@@ -69,6 +69,11 @@ class ReviewController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $review = Review::findOrFail($id);
+        $recipe_id = $review->recipe->id;
+        $review->delete();
+
+        flash()->warning('レビューを削除しました');
+        return redirect()->route('recipe.show', ['id' => $recipe_id]);
     }
 }
