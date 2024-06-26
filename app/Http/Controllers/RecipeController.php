@@ -22,13 +22,28 @@ class RecipeController extends Controller
         $categories = Category::all();
         return view('home', compact('categories'));
     }
+    public function suggestion(Request $request)
+    {
+        $posts = $request->all();
+        $categoryIds = $posts['categories'];
+        $recipesQuery = Recipe::with(['categories'])
+            ->whereHas('categories', function ($query) use ($categoryIds) {
+            $query->whereIn('categories.id', $categoryIds);//categoriesのidと一致するレシピの取得
+            });
+
+        // カテゴリーに属するすべてのレシピを取得
+        $allRecipes = $recipesQuery->inRandomOrder()->get();
+
+        // ランダムに最大8つのレシピを取得 ８つ以下の場合はそのカテゴリーのレシピをすべてを取得
+        $recipes = $allRecipes->take(min(8, $allRecipes->count()));
+        return view('recipes.suggestion', compact('recipes'));
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $recipes = Recipe::paginate(5);
-        // dd($recipes);
         return view('recipes.index', compact('recipes'));
     }
 
@@ -110,21 +125,24 @@ class RecipeController extends Controller
         $recipe = Recipe::with(['ingredients', 'steps', 'reviews.user', 'categories', 'user'])
         ->where('recipes.id', $id)
         ->first();
-        $recipe->increment('views');
+        if ($recipe) {
+            $recipe->increment('views');
 
-         // レシピの投稿者とログインユーザーが同じかどうか
-         $is_my_recipe = false;
-         if( Auth::check() && (Auth::id() === $recipe->user_id) ) {
-            $is_my_recipe = true;
-         }
-        //投稿済みかどうか
-        $is_reviewed = false;
-        if( Auth::check() ) {
-            $is_reviewed = $recipe->reviews->contains('user_id', Auth::id());
+            // レシピの投稿者とログインユーザーが同じかどうか
+            $is_my_recipe = false;
+            if( Auth::check() && (Auth::id() === $recipe->user_id) ) {
+                $is_my_recipe = true;
+            }
+            //投稿済みかどうか
+            $is_reviewed = false;
+            if( Auth::check() ) {
+                $is_reviewed = $recipe->reviews->contains('user_id', Auth::id());
+            }
+
+            return view('recipes.show', compact('recipe', 'is_my_recipe', 'is_reviewed'));
+        } else {
+            abort(404);
         }
-
-
-        return view('recipes.show', compact('recipe', 'is_my_recipe', 'is_reviewed'));
     }
 
     /**

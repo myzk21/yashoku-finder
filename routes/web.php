@@ -18,6 +18,8 @@ use App\Http\Controllers\ReviewController;
 */
 
 Route::get('/', [RecipeController::class, 'home'])->name('home');
+//おすすめレシピ一覧
+Route::post('/recipes/suggestion', [RecipeController::class, 'suggestion'])->name('recipe.suggestion');
 
 //レシピ一覧画面
 Route::get('/recipes/index', [RecipeController::class, 'index'])->name('recipe.index');
@@ -50,6 +52,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/recipes/review/destroy/{id}', [ReviewController::class, 'destroy'])->name('review.destroy');
 
     //プロフィール
+    Route::get('profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
+
 });
 //レシピ詳細
 Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipe.show');

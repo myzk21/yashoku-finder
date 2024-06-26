@@ -1,11 +1,6 @@
 <x-app-layout>
-    {{-- <h1 class="text-white text-6xl text-center mb-6">夜食Finder</h1>
-    <h3 class="text-white text-2xl text-center mb-6">～ 今のあなたに最適な夜食を見つけましょう ～</h3>
-
-    <div class="text-white">
-        <h3  class="text-xl border-b-2 text-center">あなたの今の気分を教えてください</h3>
-    </div> --}}
-    <form action="" method="POST">
+    <form action="{{ route('recipe.suggestion') }}" method="POST">
+        @csrf
         <div class="min-h-screen flex flex-col justify-center items-center py-16 w-4/5 mx-auto home-background-color">
             <h1 class="text-white text-6xl mb-4">夜食Finder</h1>
             <h3 class="text-white text-2xl mb-8">～ 今のあなたに最適な夜食を見つけましょう ～</h3>
