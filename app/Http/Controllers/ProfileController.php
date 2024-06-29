@@ -8,9 +8,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
+    public function show(Request $request, string $id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            abort(404, 'ユーザーが見つかりません');
+        }
+        $recipes = $user->recipes()->paginate(5);
+        return view('profile.show', compact('user', 'recipes'));
+
+    }
     /**
      * Display the user's profile form.
      */

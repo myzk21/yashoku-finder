@@ -3,7 +3,7 @@
         <script src="/js/recipe/destroy.js"></script>
         <script src="/js/review/star.js"></script>
     </x-slot>
-    <div class="w-10/12 p-6 mx-auto bg-white rounded mb-6">
+    <div class="w-3/4 p-6 mx-auto bg-white rounded mb-6">
         {{---レシピ詳細--}}
         <div class="grid grid-cols-2 rounded border border-gray-700 my-4">
             <div class="col-span-1">
@@ -18,7 +18,7 @@
                 <p class="mb-4 ml-6">{{ $recipe->title }}</p>
                 <h4 class="text-2xl font-bold mb-2">説明</h4>
                 <p class="mb-4 ml-6">{{ $recipe->description }}</p>
-                <p class="mb-4 text-gray-800 ml-6 text-right">{{ $recipe->user->name }}</p>
+                <a href="{{ route('profile.show_in_recipe', ['id' => $recipe->user->id]) }}" class="mb-4 block text-gray-800 ml-6 text-right hover:underline">{{ $recipe->user->name }}</a>
                 <h4 class="text-2xl font-bold mb-2">材料</h4>
                 <ul class="text-gray-800 ml-6 mb-4">
                     @foreach($recipe->ingredients as $i)
@@ -29,15 +29,6 @@
                 @foreach($recipe->categories as $c)
                     <p class="font-bold ml-6 mb-2">{{ $c->name }}</p>
                 @endforeach
-                {{-- <div class="flex-container">
-                    @foreach($recipe->categories as $c)
-                    <div class="category-card bg-white rounded-lg">
-                        <div class="p-2">
-                                <p class="font-bold ml-6">{{ $c->name }}</p>
-                        </div>
-                    </div>
-                    @endforeach
-                </div> --}}
             </div>
         </div>
 
@@ -67,11 +58,10 @@
         </div>
     </div>
 
-     {{--レビュー--}}
-    <div class="w-10/12 p-6 mx-auto bg-white rounded">
+    <div class="w-3/4 p-6 mx-auto bg-white rounded">
         <h4 class="text-2xl font-bold mb-6">レビュー</h4>
         @guest
-            <p class="text-center text-gray-500 my-6">レビューを投稿するには<a href="{{ route('login') }}" class="text-blue-700">ログイン</a>してください</p>
+            <p class="text-center text-gray-500 my-6">レビューを投稿するには<a href="{{ route('recipe.show.authenticated', ['id' =>$recipe->id]) }}" class="text-blue-700">ログイン</a>してください</p>
         @endguest
         @auth
             @if($is_reviewed)

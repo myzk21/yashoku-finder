@@ -90,7 +90,7 @@
         <hr class="my-6">{{--横線--}}
 
           <h4 class="text-xl mb-4">カテゴリー</h4>
-          <div class="text-center">
+          <div class="text-center flex flex-wrap justify-center">
                 @foreach($categories as $c)
                     <label for="category{{ $c->id }}" class="mr-3">
                         <input type="checkbox" name="categories[]" id="category{{ $c->id }}" value="{{ $c->id }}" {{ (is_array(old('categories')) && in_array($c->id, old('categories'))) ? 'checked' : '' }}>

@@ -2,7 +2,7 @@
     <div class="bg-white rounded p-4 w-3/4 mx-auto">
         {{-- {{ Breadcrumbs::render('index') }} --}}
         <div class="mb-4"></div>
-        <h1 class="text-white text-4xl mb-4 text-center">今のあなたにぴったりの夜食はこちらです！</h1>
+        <h1 class="text-4xl mb-8 text-center">今のあなたにぴったりの夜食はこちらです！</h1>
         @if(!$recipes->isEmpty())
             @foreach($recipes as $recipe)
                 @include('recipes.partial.recipe_card'){{--レシピカードの標示--}}

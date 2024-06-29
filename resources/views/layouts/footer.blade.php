@@ -11,7 +11,12 @@
             </div>
 
             <div>
-                <p class="text-center"><a href="#" class="text-lg hover:underline">マイページ</a></p>
+                @guest
+                    <p class="text-center"><a href="{{ route('login') }}" class="text-lg hover:underline">マイページ</a></p>
+                @endguest
+                @auth
+                    <p class="text-center"><a href="{{ route('profile.show', ['id' => Auth::id()]) }}" class="text-lg hover:underline">マイページ</a></p>
+                @endauth
             </div>
 
         </div>

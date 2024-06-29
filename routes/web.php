@@ -20,7 +20,9 @@ use App\Http\Controllers\ReviewController;
 Route::get('/', [RecipeController::class, 'home'])->name('home');
 //おすすめレシピ一覧
 Route::post('/recipes/suggestion', [RecipeController::class, 'suggestion'])->name('recipe.suggestion');
-
+Route::get('/recipes/suggestion', function() {
+    return abort(404);
+});
 //レシピ一覧画面
 Route::get('/recipes/index', [RecipeController::class, 'index'])->name('recipe.index');
 
@@ -54,9 +56,13 @@ Route::middleware('auth')->group(function () {
     //プロフィール
     Route::get('profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
 
+    //レシピ詳細のレビュー欄からログイン->レビュー投稿フォーム付きのレシピ詳細
+    Route::get('/recipes/{id}/authenticated', [RecipeController::class, 'show'])->name('recipe.show.authenticated');
 });
-//レシピ詳細
+//ログインしなくても見れるレシピ詳細画面
 Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipe.show');
+//レシピ詳細画面からいけるプロフィール
+Route::get('profile/in_recipe/{id}', [ProfileController::class, 'show'])->name('profile.show_in_recipe');
 
 
 require __DIR__.'/auth.php';

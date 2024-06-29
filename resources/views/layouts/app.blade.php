@@ -21,7 +21,6 @@
         @endif
 
         <link rel="stylesheet" href="/css/color.css">
-        <link rel="stylesheet" href="/css/category.css">
     </head>
     <body class="font-sans antialiased background-color">
         <div class="min-h-screen">

@@ -30,12 +30,11 @@ class RecipeController extends Controller
             ->whereHas('categories', function ($query) use ($categoryIds) {
             $query->whereIn('categories.id', $categoryIds);//categoriesのidと一致するレシピの取得
             });
-
-        // カテゴリーに属するすべてのレシピを取得
+        //カテゴリーに属するすべてのレシピを取得
         $allRecipes = $recipesQuery->inRandomOrder()->get();
 
-        // ランダムに最大8つのレシピを取得 ８つ以下の場合はそのカテゴリーのレシピをすべてを取得
-        $recipes = $allRecipes->take(min(8, $allRecipes->count()));
+        //ランダムに最大3つのレシピを取得 3つ以下の場合はそのカテゴリーのレシピをすべてを取得
+        $recipes = $allRecipes->take(min(3, $allRecipes->count()));
         return view('recipes.suggestion', compact('recipes'));
     }
     /**
