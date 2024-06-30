@@ -23,7 +23,7 @@
              {{-- 共通ヘッダーの読み込み --}}
              @include('layouts.global-header')
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg my-24">
                 {{ $slot }}
             </div>
         </div>

@@ -19,8 +19,7 @@
             </div>
         </div>
     </section>
-    <form action="{{ route('recipe.suggestion') }}" method="POST">
-        @csrf
+    <form action="{{ route('recipe.suggestion') }}" method="GET">
         <div class="min-h-screen flex flex-col justify-center items-center py-16 w-4/5 mx-auto home-background-color">
             <h1 class="text-white text-6xl mb-4">夜食Finder</h1>
             <h3 class="text-white text-2xl mb-8">～ 今のあなたに最適な夜食を見つけましょう ～</h3>

@@ -30,9 +30,6 @@
             @else
                 @include('layouts.global-header')
             @endif
-            {{-- @if (request()->is('/'))
-            @include('layouts.global-header')
-            @endif --}}
 
             <div class="mt-16">
                 @include('flash::message')

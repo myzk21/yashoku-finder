@@ -40,10 +40,17 @@ class RecipeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $recipes = Recipe::paginate(5);
-        return view('recipes.index', compact('recipes'));
+        $sortOrder = $request->input('sort', 'desc');
+        $title = $request->input('title');
+
+        $query = Recipe::query();
+        if (!empty($title)) {
+            $query->where('title', 'like', '%' . $title . '%');
+        }
+        $recipes = $query->orderBy('created_at', $sortOrder)->paginate(5);
+        return view('recipes.index', compact('recipes', 'sortOrder'));
     }
 
     /**

@@ -19,10 +19,8 @@ use App\Http\Controllers\ReviewController;
 
 Route::get('/', [RecipeController::class, 'home'])->name('home');
 //おすすめレシピ一覧
-Route::post('/recipes/suggestion', [RecipeController::class, 'suggestion'])->name('recipe.suggestion');
-Route::get('/recipes/suggestion', function() {
-    return abort(404);
-});
+Route::get('/recipes/suggestion', [RecipeController::class, 'suggestion'])->name('recipe.suggestion');
+
 //レシピ一覧画面
 Route::get('/recipes/index', [RecipeController::class, 'index'])->name('recipe.index');
 
@@ -47,7 +45,7 @@ Route::middleware('auth')->group(function () {
     //レシピ削除
     Route::delete('/recipes/destroy/{id}', [RecipeController::class, 'destroy'])->name('recipe.destroy');
 
-    //レビュー
+    //レビュー投稿
     Route::post('/recipes/{id}/review', [ReviewController::class, 'store'])->name('review.store');
 
     //レビュー削除
