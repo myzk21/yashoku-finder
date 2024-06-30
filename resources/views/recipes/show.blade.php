@@ -1,9 +1,19 @@
 <x-app-layout>
     <x-slot name="script">
-        <script src="/js/recipe/destroy.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.13.0/Sortable.min.js"></script>
         <script src="/js/review/star.js"></script>
+        <script src="/js/recipe/destroy.js"></script>
     </x-slot>
     <div class="w-3/4 p-6 mx-auto bg-white rounded mb-6">
+        @php
+        // 直前のURLを取得
+            $previousUrl = url()->previous();
+        @endphp
+        @if(strpos($previousUrl, '/index') !== false)
+            {{ Breadcrumbs::render('show', $recipe) }}{{--一覧からのアクセス--}}
+        @elseif(strpos($previousUrl, '/suggestion') !== false)
+            {{ Breadcrumbs::render('show_from_suggestion', $recipe) }}{{--おすすめからのアクセス--}}
+        @endif
         {{---レシピ詳細--}}
         <div class="grid grid-cols-2 rounded border border-gray-700 my-4">
             <div class="col-span-1">
@@ -15,9 +25,9 @@
             </div>
             <div class="col-span-1 p-4">
                 <h4 class="text-2xl font-bold mb-2">レシピ名</h4>
-                <p class="mb-4 ml-6">{{ $recipe->title }}</p>
+                <p class="mb-4 ml-6 text-xl">{{ $recipe->title }}</p>
                 <h4 class="text-2xl font-bold mb-2">説明</h4>
-                <p class="mb-4 ml-6">{{ $recipe->description }}</p>
+                <p class="mb-4 ml-6 text-xl">{{ $recipe->description }}</p>
                 <a href="{{ route('profile.show_in_recipe', ['id' => $recipe->user->id]) }}" class="mb-4 block text-gray-800 ml-6 text-right hover:underline">{{ $recipe->user->name }}</a>
                 <h4 class="text-2xl font-bold mb-2">材料</h4>
                 <ul class="text-gray-800 ml-6 mb-4">
@@ -100,7 +110,7 @@
                     <div class="flex">
                         <p>{{ $r->comment }}</p>
                         @if(Auth::check() && $r->user_id === Auth::id()) {{-- ログインユーザーのレビューかどうかを判定 --}}
-                            <button type="submit" class="text-red-500 ml-auto mr-2">削除</button>
+                            <button type="submit" class="text-red-500 ml-auto mr-2" id="delete-comment">削除</button>
                         @endif
                     </div>
                 </form>

@@ -25,7 +25,15 @@
     <body class="font-sans antialiased background-color">
         <div class="min-h-screen">
             {{-- 共通ヘッダーの読み込み --}}
+            @if (isset($global_header))
+                {{ $global_header }}
+            @else
+                @include('layouts.global-header')
+            @endif
+            {{-- @if (request()->is('/'))
             @include('layouts.global-header')
+            @endif --}}
+
             <div class="mt-16">
                 @include('flash::message')
             </div>
