@@ -38,7 +38,7 @@
                 </div>
                 <hr class="mb-6 border-gray-300">
                 <div class="flex justify-center mb-6">
-                    <button type="submit" class="button-color text-white font-bold py-2 px-4 rounded">レシピを投稿する</button>
+                    <button type="submit" class="button-color text-white font-bold py-2 px-4 rounded">レシピを見つける</button>
                 </div>
             </div>
         </div>
